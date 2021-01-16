@@ -6,6 +6,11 @@ const natsClient = NATS.connect({ url: NATS_URL, user: NATS_USER, pass: NATS_PAS
 const commandLine = readline.createInterface(process.stdin, process.stdout);
 const requiredFileType = "video/mp4";
 
+/*
+  main program function which indefinitely waits for user input on the CLI
+  it validates the user input which must be a valid mp4 file path
+  sends the file path via nats on the appropriate subject and prints the response
+ */
 (async () => {
   while (true) {
     let filePath = await promptCLI(commandLine, "Provide mp4 file path or type 'exit' > ")
@@ -28,11 +33,13 @@ const requiredFileType = "video/mp4";
     }
   }
 
+  // when we break the above loop, we close nats and the command line and effectively exit the program
   natsClient.close();
   commandLine.close();
   console.log('Bye bye!');
 })();
 
+// nats error handling
 natsClient.on('error', (err) => {
   console.error('Error [' + natsClient.currentServer + ']:', err.message)
   process.exit(1)

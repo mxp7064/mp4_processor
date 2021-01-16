@@ -5,11 +5,13 @@ import (
 	"log"
 	"os"
 	"runtime"
-
+	"extractor-service/extractor"
 	"github.com/nats-io/nats.go"
 )
 
 func main() {
+
+	var initSegmentExtractor exctractor.InitSegmentExtractor = exctractor.InitSegmentExtractorImplementation{}
 
 	const natsURL = "nats://localhost:4222"
 	const subject = "init-segment"
@@ -31,7 +33,9 @@ func main() {
 		mp4Path := string(msg.Data)
 		fmt.Printf("Got message: '%s\n", mp4Path+"'")
 		var reply string
-		initSegmentFilePath, err := getInitSegmentPath(mp4Path)
+
+		initSegmentFilePath, err := initSegmentExtractor.ExtractInitSegment(mp4Path)
+
 		if err != nil {
 			reply = "An error occurred during file proccessing: " + err.Error()
 		} else {
