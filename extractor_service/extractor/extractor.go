@@ -2,7 +2,6 @@ package exctractor
 
 import (
 	"encoding/binary"
-	"fmt"
 	"io/ioutil"
 	"path/filepath"
 
@@ -20,9 +19,10 @@ func convertByteSliceToString(mp4Bytes []byte, startIndex int, endIndex int) str
 	return string(mp4Bytes[startIndex:endIndex])
 }
 
+/*
+get initialization segment bytes from mp4 file from the provided file path
+*/
 func getInitSegment(mp4Path string) ([]byte, error) {
-	fmt.Printf("Processing video from path %v \n", mp4Path)
-
 	mp4Bytes, err := ioutil.ReadFile(mp4Path)
 	if err != nil {
 		return nil, err
@@ -44,6 +44,10 @@ func getInitSegment(mp4Path string) ([]byte, error) {
 	return append(ftypBoxBytes, moovBoxBytes...), nil
 }
 
+/*
+get moov box bytes from the provided mp4 byte array
+starts searching for the moov box from boxStartIndex
+*/
 func getMoovBox(mp4Bytes []byte, boxStartIndex int) ([]byte, error) {
 	for {
 
@@ -71,6 +75,11 @@ type InitSegmentExtractor interface {
 type InitSegmentExtractorImplementation struct {
 }
 
+/*
+InitSegmentExtractorImplementation 'implements' interface InitSegmentExtractor
+extracts the initialization segment from mp4 file from the provided file path
+writes the initialization segment to a new file and returns its path
+*/
 func (i InitSegmentExtractorImplementation) ExtractInitSegment(mp4Path string) (string, error) {
 	initSegmentBytes, err := getInitSegment(mp4Path)
 	if err != nil {
@@ -79,7 +88,7 @@ func (i InitSegmentExtractorImplementation) ExtractInitSegment(mp4Path string) (
 		initSegmentFilePath := filepath.Join(filepath.Dir(mp4Path), uuid.NewV4().String())
 		err := ioutil.WriteFile(initSegmentFilePath, initSegmentBytes, 0644)
 		if err != nil {
-			return "", errors.Wrap(err, "Writing initialization segment to a file path '"+initSegmentFilePath+"'  failed")
+			return "", errors.Wrap(err, "Writing initialization segment to a file path '"+initSegmentFilePath+"' failed")
 		}
 		return initSegmentFilePath, nil
 	}

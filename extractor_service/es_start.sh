@@ -2,4 +2,5 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 source ${DIR}/../env.sh
 
-go run *.go
+export LOGGING_LEVEL=debug
+go run main.go

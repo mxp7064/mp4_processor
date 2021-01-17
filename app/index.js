@@ -15,6 +15,11 @@ const requiredFileType = "video/mp4";
   while (true) {
     let filePath = await promptCLI(commandLine, "Provide mp4 file path or type 'exit' > ")
 
+    if (filePath == "") {
+      console.log("Please provide mp4 file path")
+      continue
+    }
+
     if (filePath == 'exit') {
       break;
     }
