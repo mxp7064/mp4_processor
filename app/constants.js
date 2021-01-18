@@ -5,6 +5,7 @@ const NATS_PASS = process.env.NATS_PASS
 const NATS_SUBJECT = "init-segment"
 const NATS_REQUEST_TIMEOUT = 5000
 
+exports.NATS_URL = NATS_URL
 exports.NATS_USER = NATS_USER
 exports.NATS_PASS = NATS_PASS
 exports.NATS_SUBJECT = NATS_SUBJECT

@@ -2,7 +2,7 @@
 
 const FileType = require('file-type');
 const readChunk = require('read-chunk');
-const { AppError, InvalidFileTypeError } = require('./errors.js')
+const { AppError } = require('./errors.js')
 const NATS = require('nats');
 
 // checks if the provided file at filePath is of the requiredFileType
