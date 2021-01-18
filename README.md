@@ -93,7 +93,10 @@ npm install
 ./app_start.sh
 ```
 
-### Go extractor_service
+- stop app:
+type ```exit```
+
+### Go extractor service
 
 - in new terminal run:
 ```sh
@@ -101,6 +104,9 @@ cd extractor_service
 go build
 ./es_start.sh
 ```
+
+- stop service:
+  ```CTRL + C```
 
 ## Test use cases
 

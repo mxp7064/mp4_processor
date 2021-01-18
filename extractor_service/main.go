@@ -10,6 +10,7 @@ import (
 )
 
 func init() {
+	// set up logging
 	loggingLevel, err := log.ParseLevel(os.Getenv("LOGGING_LEVEL"))
 	if err != nil {
 		log.Fatal(err)
@@ -23,9 +24,9 @@ func init() {
 
 func main() {
 
-	// construct a InitSegmentExtractorImplementation struct which implements the InitSegmentExtractor interface
+	// construct a InitSegmentExtractorService struct which implements the InitSegmentExtractor interface
 	// this way we can easily swap implementations in the future
-	var initSegmentExtractor ex.InitSegmentExtractor = ex.InitSegmentExtractorImplementation{}
+	var initSegmentExtractor ex.InitSegmentExtractor = ex.InitSegmentExtractorService{}
 
 	const natsURL = "nats://localhost:4222"
 	const subject = "init-segment"
@@ -50,7 +51,7 @@ func main() {
 		log.Debugf("Got message: '%s\n", mp4Path+"'")
 		var reply string
 
-		// extracit initialization segment
+		// extract initialization segment
 		initSegmentFilePath, err := initSegmentExtractor.ExtractInitSegment(mp4Path)
 
 		// construct and publish appropriate reply message - initialization segment file path or error message

@@ -33,7 +33,6 @@ const requiredFileType = "video/mp4";
       let response = await requestOne(natsClient, NATS_SUBJECT, filePath, NATS_REQUEST_TIMEOUT)
       console.log(response)
     } catch (err) {
-      // we can also log error stack from AppError's cause with err.stack
       console.error(err.message)
     }
   }

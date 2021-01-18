@@ -19,9 +19,7 @@ func convertByteSliceToString(mp4Bytes []byte, startIndex int, endIndex int) str
 	return string(mp4Bytes[startIndex:endIndex])
 }
 
-/*
-get initialization segment bytes from mp4 file from the provided file path
-*/
+// get initialization segment bytes from mp4 file from the provided file path
 func getInitSegment(mp4Path string) ([]byte, error) {
 	mp4Bytes, err := ioutil.ReadFile(mp4Path)
 	if err != nil {
@@ -72,20 +70,20 @@ type InitSegmentExtractor interface {
 	ExtractInitSegment(mp4Path string) (string, error)
 }
 
-type InitSegmentExtractorImplementation struct {
+type InitSegmentExtractorService struct {
 }
 
 /*
-InitSegmentExtractorImplementation 'implements' interface InitSegmentExtractor
+InitSegmentExtractorService implements interface InitSegmentExtractor
 extracts the initialization segment from mp4 file from the provided file path
 writes the initialization segment to a new file and returns its path
 */
-func (i InitSegmentExtractorImplementation) ExtractInitSegment(mp4Path string) (string, error) {
+func (i InitSegmentExtractorService) ExtractInitSegment(mp4Path string) (string, error) {
 	initSegmentBytes, err := getInitSegment(mp4Path)
 	if err != nil {
 		return "", errors.Wrap(err, "Extracting initital segment from file at path '"+mp4Path+"' failed")
 	} else {
-		initSegmentFilePath := filepath.Join(filepath.Dir(mp4Path), uuid.NewV4().String())
+		initSegmentFilePath := filepath.Join(filepath.Dir(mp4Path), "init-segment-"+uuid.NewV4().String())
 		err := ioutil.WriteFile(initSegmentFilePath, initSegmentBytes, 0644)
 		if err != nil {
 			return "", errors.Wrap(err, "Writing initialization segment to a file path '"+initSegmentFilePath+"' failed")

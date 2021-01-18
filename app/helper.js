@@ -13,7 +13,7 @@ const isFileType = (filePath, requiredFileType) => {
       buffer = readChunk.sync(filePath, 0, 200);
       fileType = await FileType.fromBuffer(buffer);
     } catch (err) {
-      reject(new AppError("Error occurred during file reading", err))
+      reject(new AppError("Error occurred during file type check", err))
       return
     }
 
